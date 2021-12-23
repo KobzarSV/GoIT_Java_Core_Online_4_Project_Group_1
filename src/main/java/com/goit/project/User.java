@@ -3,7 +3,7 @@ package com.goit.project;
 import java.util.Objects;
 
 public class User {
-    private boolean isActive;
+    private boolean active;
     private final int id;
     private String bank;
     private boolean usd;
@@ -15,7 +15,7 @@ public class User {
 
     public User(int id) {
         this.id = id;
-        isActive = true;
+        active = true;
         bank = "NBU";
         usd = true;
         eur = true;
@@ -26,11 +26,11 @@ public class User {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public int getId() {

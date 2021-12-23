@@ -1,27 +1,21 @@
 package com.goit.project;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserStorage {
-    private static ArrayList<User> userSettings;
+    public static HashMap<Integer, User> userSettings;
 
     public UserStorage() {
-        userSettings = new ArrayList<>();
+        userSettings = new HashMap<>();
     }
 
     public static void add(User user) {
-        userSettings.add(user);
+        userSettings.put(user.getId(), user);
     }
 
     public static User get(int userId) {
-        User result = null;
-        for (User user : userSettings) {
-            if (user.getId() == userId) {
-                result = user;
-                break;
-            }
-        }
-        return result;
+        return userSettings.get(userId);
     }
+
 
 }
