@@ -22,4 +22,15 @@ public class Buttons {
     public static final String RUB = "RUB";
 
     public static final String TIME_OF_NOTIFICATIONS = "Время оповещений";
+    public static final String NINE = "9";
+    public static final String TEN = "10";
+    public static final String ELEVEN = "11";
+    public static final String TWELVE = "12";
+    public static final String THIRTEEN = "13";
+    public static final String FOURTEEN = "14";
+    public static final String FIFTEEN = "15";
+    public static final String SIXTEEN = "16";
+    public static final String SEVENTEEN = "17";
+    public static final String EIGHTEEN = "18";
+    public static final String TURN_OFF = "Выключить уведомления";
 }

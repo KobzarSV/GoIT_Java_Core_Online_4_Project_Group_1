@@ -1,7 +1,7 @@
 package com.goit.project.controller;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -29,55 +29,60 @@ public class Bot extends TelegramLongPollingBot {
                     executeMessage(sendMessageService.startMessage(update));
                     break;
                 case GET_INFO:
-                    executeMessage(sendMessageService.getInfoMessage(update));
+                    executeMessage(sendMessageService.getInfoDefault(update));
                     break;
                 case SETTINGS:
-                    executeMessage(sendMessageService.settingsMessage(update));
+                    executeMessage(sendMessageService.setSettings(update));
                     break;
                 case BACK:
-                    executeMessage(sendMessageService.getInfoMessage(update));
+                    executeMessage(sendMessageService.getInfoDefault(update));
                     break;
                 case SIGNS:
-                    executeMessage(sendMessageService.singsMessage(update));
+                    executeMessage(sendMessageService.setSings(update));
                     break;
                 case TWO_SINGS:
-                    executeMessage(sendMessageService.twoSingsMessage(update));
+                    executeMessage(sendMessageService.setTwoSings(update));
                     break;
                 case THREE_SINGS:
-                    executeMessage(sendMessageService.threeSingsMessage(update));
+                    executeMessage(sendMessageService.setThreeSings(update));
                     break;
                 case FOUR_SINGS:
-                    executeMessage(sendMessageService.fourSingsMessage(update));
+                    executeMessage(sendMessageService.setFourSings(update));
                     break;
                 case BANK:
-                    executeMessage(sendMessageService.bankMessage(update));
+                    executeMessage(sendMessageService.selectBank(update));
                     break;
                 case NBU_BANK:
-                    executeMessage(sendMessageService.nbuBankMessage(update));
+                    executeMessage(sendMessageService.selectNbuBank(update));
                     break;
                 case PB_BANK:
-                    executeMessage(sendMessageService.pbBankMessage(update));
+                    executeMessage(sendMessageService.selectPrivateBank(update));
                     break;
                 case MONO_BANK:
-                    executeMessage(sendMessageService.monoBankMessage(update));
+                    executeMessage(sendMessageService.selectMonoBank(update));
                     break;
                 case CURRENCIES:
-                    executeMessage(sendMessageService.currencyMessage(update));
+                    executeMessage(sendMessageService.selectCurrency(update));
                     break;
                 case USD:
-                    executeMessage(sendMessageService.usdMessage(update));
+                    executeMessage(sendMessageService.selectUsdCurrency(update));
                     break;
                 case EUR:
-                    executeMessage(sendMessageService.eurMessage(update));
+                    executeMessage(sendMessageService.selectEurCurrency(update));
                     break;
                 case RUB:
-                    executeMessage(sendMessageService.rubMessage(update));
+                    executeMessage(sendMessageService.selectRubCurrency(update));
+                    break;
+                case TIME_OF_NOTIFICATIONS:
+                    executeMessage(sendMessageService.setNotificationTime(update));
+                    break;
+                default:
                     break;
             }
         }
     }
 
-    private <T extends BotApiMethod> void executeMessage(T sendMessage) {
+    private void executeMessage(SendMessage sendMessage) {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {

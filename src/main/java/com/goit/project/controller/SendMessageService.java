@@ -30,7 +30,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage getInfoMessage(Update update) {
+    public SendMessage getInfoDefault(Update update) {
         // вместо DEFAULT_MESSAGE здесь будет метод, который будет отображать курс валют по умолчанию
         //  defaultExchangeRate()
         String defaultInfoMessage = "Курс валют в Приват Банк: USD/UAH\nПокупка: 27.55\nПродажа: 27.95";
@@ -41,7 +41,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage settingsMessage(Update update) {
+    public SendMessage setSettings(Update update) {
         String settingsStartMessage = "Меню настроек";
         SendMessage sendMessage = createMessage(update, settingsStartMessage);
         ReplyKeyboardMarkup keyboardMarkup =
@@ -51,7 +51,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage singsMessage(Update update) {
+    public SendMessage setSings(Update update) {
         String singsStartMessage = "Выберите кол-во знаков после запятой";
         SendMessage sendMessage = createMessage(update, singsStartMessage);
         ReplyKeyboardMarkup keyboardMarkup =
@@ -61,7 +61,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage twoSingsMessage(Update update) {
+    public SendMessage setTwoSings(Update update) {
         String twoSingsStartMessage = "2";
         SendMessage sendMessage = createMessage(update, twoSingsStartMessage);
         // Здесь будет метод сохранения в настройках 2 знака после запятой
@@ -72,7 +72,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage threeSingsMessage(Update update) {
+    public SendMessage setThreeSings(Update update) {
         String threeSingsStartMessage = "3";
         SendMessage sendMessage = createMessage(update, threeSingsStartMessage);
         // Здесь будет метод сохранения в настройках 3 знака после запятой
@@ -83,7 +83,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage fourSingsMessage(Update update) {
+    public SendMessage setFourSings(Update update) {
         String fourSingsStartMessage = "4";
         SendMessage sendMessage = createMessage(update, fourSingsStartMessage);
         // Здесь будет метод сохранения в настройках 4 знака после запятой
@@ -94,7 +94,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage bankMessage(Update update) {
+    public SendMessage selectBank(Update update) {
         String bankStartMessage = "Выберите Банк";
         SendMessage sendMessage = createMessage(update, bankStartMessage);
         ReplyKeyboardMarkup keyboardMarkup =
@@ -104,7 +104,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage nbuBankMessage(Update update) {
+    public SendMessage selectNbuBank(Update update) {
         String nbuBankStartMessage = "НБУ";
         SendMessage sendMessage = createMessage(update, nbuBankStartMessage);
         // Здесь будет метод сохранения в настройках НБУ Банк
@@ -115,7 +115,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage pbBankMessage(Update update) {
+    public SendMessage selectPrivateBank(Update update) {
         String pbBankStartMessage = "Приват Банк";
         SendMessage sendMessage = createMessage(update, pbBankStartMessage);
         // Здесь будет метод сохранения в настройках Приват Банк
@@ -126,7 +126,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage monoBankMessage(Update update) {
+    public SendMessage selectMonoBank(Update update) {
         String monoBankStartMessage = "Моно Банк";
         SendMessage sendMessage = createMessage(update, monoBankStartMessage);
         // Здесь будет метод сохранения в настройках MONO Банк
@@ -137,8 +137,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-
-    public SendMessage currencyMessage(Update update) {
+    public SendMessage selectCurrency(Update update) {
         String currencyStartMessage = "Выберите валюту";
         SendMessage sendMessage = createMessage(update, currencyStartMessage);
         ReplyKeyboardMarkup keyboardMarkup =
@@ -148,7 +147,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage usdMessage(Update update) {
+    public SendMessage selectUsdCurrency(Update update) {
         String usdStartMessage = "USD";
         SendMessage sendMessage = createMessage(update, usdStartMessage);
         // Здесь будет метод сохранения в настройках USD
@@ -159,7 +158,7 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage eurMessage(Update update) {
+    public SendMessage selectEurCurrency(Update update) {
         String eurStartMessage = "EUR";
         SendMessage sendMessage = createMessage(update, eurStartMessage);
         // Здесь будет метод сохранения в настройках EUR
@@ -170,13 +169,23 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage rubMessage(Update update) {
+    public SendMessage selectRubCurrency(Update update) {
         String rubStartMessage = "RUB";
         SendMessage sendMessage = createMessage(update, rubStartMessage);
         // Здесь будет метод сохранения в настройках RUB
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList(USD, EUR, "✅ " + RUB, BACK)));
+        sendMessage.setReplyMarkup(keyboardMarkup);
+        return sendMessage;
+    }
+
+    public SendMessage setNotificationTime(Update update) {
+        String numbersStartMessage = "Выберите время уведомлений";
+        SendMessage sendMessage = createMessage(update, numbersStartMessage);
+        ReplyKeyboardMarkup keyboardMarkup =
+                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
+                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
