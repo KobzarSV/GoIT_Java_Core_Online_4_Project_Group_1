@@ -34,4 +34,24 @@ public class UserService {
         UserStorage.get(userId).setSchedulerTime(time);
     }
 
+    public String getBank(int userId) {
+        return UserStorage.get(userId).getBank();
+    }
+
+    public Integer getRounding(int userId) {
+        return UserStorage.get(userId).getRounding();
+    }
+
+    public boolean[] getCurrencies(int userId) {
+        return new boolean[]{UserStorage.get(userId).isUsd(), UserStorage.get(userId).isEur(), UserStorage.get(userId).isRub()};
+    }
+
+    public boolean getScheduler(int userId) {
+        return UserStorage.get(userId).isScheduler();
+    }
+
+    public Integer getSchedulerTime(int userId) {
+        return UserStorage.get(userId).getSchedulerTime();
+    }
+
 }
