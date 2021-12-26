@@ -76,6 +76,39 @@ public class Bot extends TelegramLongPollingBot {
                 case TIME_OF_NOTIFICATIONS:
                     executeMessage(sendMessageService.setNotificationTime(update));
                     break;
+                case NINE:
+                    executeMessage(sendMessageService.setNineNotificationTime(update));
+                    break;
+                case TEN:
+                    executeMessage(sendMessageService.setTenNotificationTime(update));
+                    break;
+                case ELEVEN:
+                    executeMessage(sendMessageService.setElevenNotificationTime(update));
+                    break;
+                case TWELVE:
+                    executeMessage(sendMessageService.setTwelveNotificationTime(update));
+                    break;
+                case THIRTEEN:
+                    executeMessage(sendMessageService.setThirteenNotificationTime(update));
+                    break;
+                case FOURTEEN:
+                    executeMessage(sendMessageService.setFourteenNotificationTime(update));
+                    break;
+                case FIFTEEN:
+                    executeMessage(sendMessageService.setFifteenNotificationTime(update));
+                    break;
+                case SIXTEEN:
+                    executeMessage(sendMessageService.setSixteenNotificationTime(update));
+                    break;
+                case SEVENTEEN:
+                    executeMessage(sendMessageService.setSeventeenNotificationTime(update));
+                    break;
+                case EIGHTEEN:
+                    executeMessage(sendMessageService.setEighteenNotificationTime(update));
+                    break;
+                case TURN_OFF:
+                    executeMessage(sendMessageService.setTurnOffNotificationTime(update));
+                    break;
                 default:
                     break;
             }
