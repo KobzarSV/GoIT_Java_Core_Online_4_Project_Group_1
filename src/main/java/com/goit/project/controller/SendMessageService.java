@@ -1,5 +1,6 @@
 package com.goit.project.controller;
 
+import com.goit.project.UserService;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -10,19 +11,20 @@ import static java.util.Arrays.asList;
 public class SendMessageService {
 
     private final ButtonsService buttonsService = new ButtonsService();
-    String userID;
+    int userID;
+    UserService userService = new UserService();
 
     private SendMessage createMessage(Update update, String message) {
         SendMessage sendMessage = new SendMessage();
-        userID = String.valueOf(update.getMessage().getChatId());
-        // createUser(userID);
-        System.out.println(userID);
-        sendMessage.setChatId(userID);
+        sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         sendMessage.setText(message);
         return sendMessage;
     }
 
     public SendMessage startMessage(Update update) {
+        userID = Math.toIntExact(update.getMessage().getChatId());
+        userService.createUser(userID);
+        System.out.println(userID);
         String startTextMessage = "Добро пожаловать! Этот бот поможет отслеживать актуальные курсы валют \uD83D\uDCB1";
         SendMessage sendMessage = createMessage(update, startTextMessage);
         ReplyKeyboardMarkup keyboardMarkup =

@@ -3,7 +3,7 @@ package com.goit.project;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import com.goit.task.*;
+import com.goit.project.task.*;
 //Ещё не дописан
 
 public class DataCaching implements Runnable {

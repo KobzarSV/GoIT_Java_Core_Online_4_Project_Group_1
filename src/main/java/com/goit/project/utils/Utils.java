@@ -1,6 +1,6 @@
-package com.goit.utils;
+package com.goit.project.utils;
 
-import com.goit.banks.*;
+import com.goit.project.banks.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
