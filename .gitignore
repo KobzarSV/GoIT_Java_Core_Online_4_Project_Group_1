@@ -4,3 +4,4 @@ target
 *.iml
 *.ipr
 README.md
+pom.xml
