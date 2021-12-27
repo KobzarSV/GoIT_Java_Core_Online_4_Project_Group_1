@@ -89,13 +89,22 @@ public class Bot extends TelegramLongPollingBot {
                     executeMessage(sendMessageService.selectCurrency(update));
                     break;
                 case USD:
-                    executeMessage(sendMessageService.selectUsdCurrency(update));
+                    executeMessage(sendMessageService.changeUsdCurrency(update));
+                    break;
+                case ("✅ " + USD):
+                    executeMessage(sendMessageService.changeUsdCurrency(update));
                     break;
                 case EUR:
-                    executeMessage(sendMessageService.selectEurCurrency(update));
+                    executeMessage(sendMessageService.changeEurCurrency(update));
+                    break;
+                case ("✅ " + EUR):
+                    executeMessage(sendMessageService.changeEurCurrency(update));
                     break;
                 case RUB:
-                    executeMessage(sendMessageService.selectRubCurrency(update));
+                    executeMessage(sendMessageService.changeRubCurrency(update));
+                    break;
+                case ("✅ " + RUB):
+                    executeMessage(sendMessageService.changeRubCurrency(update));
                     break;
                 case TIME_OF_NOTIFICATIONS:
                     executeMessage(sendMessageService.setNotificationTime(update));

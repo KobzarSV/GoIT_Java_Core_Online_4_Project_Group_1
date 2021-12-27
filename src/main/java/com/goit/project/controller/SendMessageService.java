@@ -5,6 +5,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.goit.project.controller.Buttons.*;
@@ -162,44 +164,72 @@ public class SendMessageService {
     public SendMessage selectCurrency(Update update) {
         String currencyStartMessage = "Выберите валюту";
         SendMessage sendMessage = createMessage(update, currencyStartMessage);
+        List<String> buttonsList = createButtonsList();
+
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtons(buttonsService.createButtons(
-                        asList("✅ " + USD, EUR, RUB, BACK)));
+                buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
 
-    public SendMessage selectUsdCurrency(Update update) {
-        String usdStartMessage = "Выбрана валюта USD";
+    public SendMessage changeUsdCurrency(Update update) {
+        String usdStartMessage = "Изменена валюта USD";
         SendMessage sendMessage = createMessage(update, usdStartMessage);
         userService.setUsd(userID, !userService.getUsd(userID));
+        List<String> buttonsList = createButtonsList();
+
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtons(buttonsService.createButtons(
-                        asList("✅ " + USD, EUR, RUB, BACK)));
+                buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
 
-    public SendMessage selectEurCurrency(Update update) {
-        String eurStartMessage = "Выбрана валюта EUR";
+    public SendMessage changeEurCurrency(Update update) {
+        String eurStartMessage = "Изменена валюта EUR";
         SendMessage sendMessage = createMessage(update, eurStartMessage);
         userService.setEur(userID, !userService.getEur(userID));
+        List<String> buttonsList = createButtonsList();
+
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtons(buttonsService.createButtons(
-                        asList(USD, "✅ " + EUR, RUB, BACK)));
+                buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
 
-    public SendMessage selectRubCurrency(Update update) {
-        String rubStartMessage = "Выбрана валюта RUB";
+    public SendMessage changeRubCurrency(Update update) {
+        String rubStartMessage = "Изменена валюта RUB";
         SendMessage sendMessage = createMessage(update, rubStartMessage);
         userService.setRub(userID, !userService.getRub(userID));
+        List<String> buttonsList = createButtonsList();
+
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtons(buttonsService.createButtons(
-                        asList(USD, EUR, "✅ " + RUB, BACK)));
+                buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
+    }
+
+    private List<String> createButtonsList() {
+        boolean usd = userService.getUsd(userID);
+        boolean eur = userService.getEur(userID);
+        boolean rub = userService.getRub(userID);
+        List<String> buttonsList = new ArrayList<>();
+        if (usd) {
+            buttonsList.add("✅ " + USD);
+        } else {
+            buttonsList.add(USD);
+        }
+        if (eur) {
+            buttonsList.add("✅ " + EUR);
+        } else {
+            buttonsList.add(EUR);
+        }
+        if (rub) {
+            buttonsList.add("✅ " + RUB);
+        } else {
+            buttonsList.add(RUB);
+        }
+        buttonsList.add(BACK);
+        return buttonsList;
     }
 
     public SendMessage setNotificationTime(Update update) {

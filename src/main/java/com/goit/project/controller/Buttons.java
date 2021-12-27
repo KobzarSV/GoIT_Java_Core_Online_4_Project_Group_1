@@ -32,5 +32,5 @@ public class Buttons {
     public static final String SIXTEEN = "16:00";
     public static final String SEVENTEEN = "17:00";
     public static final String EIGHTEEN = "18:00";
-    public static final String TURN_OFF = "Выключить уведомления";
+    public static final String TURN_OFF = "Вкл/Выкл уведомления";
 }

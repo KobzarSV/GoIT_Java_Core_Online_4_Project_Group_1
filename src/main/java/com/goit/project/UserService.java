@@ -101,12 +101,12 @@ public class UserService {
         boolean rub = getRub(userId);
         int rounding = getRounding(userId);
         DataCaching data = DataCaching.getInstance();
-        HashMap<String, Currency> currencies = data.getCurrenciesByBank(bank);
-        return resultStringForming(bank, usd, eur, rub, rounding, currencies);
+        HashMap<String, Currency> currenciesData = data.getCurrenciesByBank(bank);
+        return resultStringForming(bank, usd, eur, rub, rounding, currenciesData);
     }
 
     private String resultStringForming(String bank, boolean usd, boolean eur, boolean rub, int rounding,
-                                       HashMap<String, Currency> currencies) throws Exception {
+                                       HashMap<String, Currency> currenciesData) throws Exception {
         StringBuilder result = new StringBuilder();
         String bankString;
         switch (bank) {
@@ -131,23 +131,23 @@ public class UserService {
         }
         if (usd) {
             result.append("USD/UAH\nПокупка: ");
-            result.append(currencies.get("USD").getRateBuy().setScale(rounding, RoundingMode.HALF_UP));
+            result.append(currenciesData.get("USD").getRateBuy().setScale(rounding, RoundingMode.HALF_UP));
             result.append("\nПродажа: ");
-            result.append(currencies.get("USD").getRateSell().setScale(rounding, RoundingMode.HALF_UP));
+            result.append(currenciesData.get("USD").getRateSell().setScale(rounding, RoundingMode.HALF_UP));
             result.append("\n\n");
         }
         if (eur) {
             result.append("EUR/UAH\nПокупка: ");
-            result.append(currencies.get("EUR").getRateBuy().setScale(rounding, RoundingMode.HALF_UP));
+            result.append(currenciesData.get("EUR").getRateBuy().setScale(rounding, RoundingMode.HALF_UP));
             result.append("\nПродажа: ");
-            result.append(currencies.get("EUR").getRateSell().setScale(rounding, RoundingMode.HALF_UP));
+            result.append(currenciesData.get("EUR").getRateSell().setScale(rounding, RoundingMode.HALF_UP));
             result.append("\n\n");
         }
         if (rub) {
             result.append("RUB/UAH\nПокупка: ");
-            result.append(currencies.get("RUB").getRateBuy().setScale(rounding, RoundingMode.HALF_UP));
+            result.append(currenciesData.get("RUB").getRateBuy().setScale(rounding, RoundingMode.HALF_UP));
             result.append("\nПродажа: ");
-            result.append(currencies.get("RUB").getRateSell().setScale(rounding, RoundingMode.HALF_UP));
+            result.append(currenciesData.get("RUB").getRateSell().setScale(rounding, RoundingMode.HALF_UP));
             result.append("\n\n");
         }
         result.deleteCharAt(result.length() - 1);
