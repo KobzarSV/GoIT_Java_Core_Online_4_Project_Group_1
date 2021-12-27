@@ -8,9 +8,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 public class Controller {
 
     public static void main(String[] args) throws TelegramApiException {
-        DataCaching dataCache = DataCaching.getInstance();
-        dataCache.run();
+
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(new Bot());
+
+        DataCaching dataCache = DataCaching.getInstance();
+        dataCache.run();
     }
 }

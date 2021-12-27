@@ -13,12 +13,12 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "botName";
+        return "@KSVtestMyBot";
     }
 
     @Override
     public String getBotToken() {
-        return "botToken";
+        return "5020369693:AAG-6fhATMoHmc5Bs6rx4k0WXLIYpSDjjP4";
     }
 
     @Override
@@ -110,6 +110,7 @@ public class Bot extends TelegramLongPollingBot {
                     executeMessage(sendMessageService.setTurnOffNotificationTime(update));
                     break;
                 default:
+                    System.out.println("Команда не существует");
                     break;
             }
         }

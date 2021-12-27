@@ -67,7 +67,7 @@ public class SendMessageService {
     public SendMessage setTwoSings(Update update) {
         String twoSingsStartMessage = "Выбрано 2 знака после запятой";
         SendMessage sendMessage = createMessage(update, twoSingsStartMessage);
-        // Здесь будет метод сохранения в настройках 2 знака после запятой
+        userService.setRounding(userID, 2);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList("✅ " + TWO_SINGS, THREE_SINGS, FOUR_SINGS, BACK)));
@@ -78,7 +78,7 @@ public class SendMessageService {
     public SendMessage setThreeSings(Update update) {
         String threeSingsStartMessage = "Выбрано 3 знака после запятой";
         SendMessage sendMessage = createMessage(update, threeSingsStartMessage);
-        // Здесь будет метод сохранения в настройках 3 знака после запятой
+        userService.setRounding(userID, 3);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList(TWO_SINGS, "✅ " + THREE_SINGS, FOUR_SINGS, BACK)));
@@ -89,7 +89,7 @@ public class SendMessageService {
     public SendMessage setFourSings(Update update) {
         String fourSingsStartMessage = "Выбрано 4 знака после запятой";
         SendMessage sendMessage = createMessage(update, fourSingsStartMessage);
-        // Здесь будет метод сохранения в настройках 4 знака после запятой
+        userService.setRounding(userID, 3);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList(TWO_SINGS, THREE_SINGS, "✅ " + FOUR_SINGS, BACK)));
@@ -102,7 +102,7 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, bankStartMessage);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
-                        asList(NBU_BANK, "✅ " + PB_BANK, MONO_BANK, BACK)));
+                        asList("NBU", "✅ " + "PB", "Mono", BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -110,10 +110,10 @@ public class SendMessageService {
     public SendMessage selectNbuBank(Update update) {
         String nbuBankStartMessage = "Выбран НБУ";
         SendMessage sendMessage = createMessage(update, nbuBankStartMessage);
-        // Здесь будет метод сохранения в настройках НБУ Банк
+        userService.setBank(userID, NBU_BANK);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
-                        asList("✅ " + NBU_BANK, PB_BANK, MONO_BANK, BACK)));
+                        asList("✅ " + "NBU", "PB" , "Mono", BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -121,10 +121,10 @@ public class SendMessageService {
     public SendMessage selectPrivateBank(Update update) {
         String pbBankStartMessage = "Выбран Приват Банк";
         SendMessage sendMessage = createMessage(update, pbBankStartMessage);
-        // Здесь будет метод сохранения в настройках Приват Банк
+        userService.setBank(userID, PB_BANK);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
-                        asList(NBU_BANK, "✅ " + PB_BANK, MONO_BANK, BACK)));
+                        asList("NBU", "✅ " + "PB", "Mono", BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -132,10 +132,10 @@ public class SendMessageService {
     public SendMessage selectMonoBank(Update update) {
         String monoBankStartMessage = "Выбран Моно Банк";
         SendMessage sendMessage = createMessage(update, monoBankStartMessage);
-        // Здесь будет метод сохранения в настройках MONO Банк
+        userService.setBank(userID, MONO_BANK);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
-                        asList(NBU_BANK, PB_BANK, "✅ " + MONO_BANK, BACK)));
+                        asList("NBU", "PB", "✅ " + "Mono", BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -153,7 +153,7 @@ public class SendMessageService {
     public SendMessage selectUsdCurrency(Update update) {
         String usdStartMessage = "Выбрана валюта USD";
         SendMessage sendMessage = createMessage(update, usdStartMessage);
-        // Здесь будет метод сохранения в настройках USD
+        userService.setUsd(userID, true);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList("✅ " + USD, EUR, RUB, BACK)));
@@ -164,7 +164,7 @@ public class SendMessageService {
     public SendMessage selectEurCurrency(Update update) {
         String eurStartMessage = "Выбрана валюта EUR";
         SendMessage sendMessage = createMessage(update, eurStartMessage);
-        // Здесь будет метод сохранения в настройках EUR
+        userService.setEur(userID, true);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList(USD, "✅ " + EUR, RUB, BACK)));
@@ -175,7 +175,7 @@ public class SendMessageService {
     public SendMessage selectRubCurrency(Update update) {
         String rubStartMessage = "Выбрана валюта RUB";
         SendMessage sendMessage = createMessage(update, rubStartMessage);
-        // Здесь будет метод сохранения в настройках RUB
+        userService.setRub(userID, true);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList(USD, EUR, "✅ " + RUB, BACK)));
@@ -196,7 +196,8 @@ public class SendMessageService {
     public SendMessage setNineNotificationTime(Update update) {
         String setNineStartMessage = "Время уведомлений установлено на 9:00";
         SendMessage sendMessage = createMessage(update, setNineStartMessage);
-        // метод сохранения в настройках 9 часов для уведомлений
+        userService.setSchedulerTime(userID, 9);
+
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList("✅ " + NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
                         (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
@@ -207,7 +208,7 @@ public class SendMessageService {
     public SendMessage setTenNotificationTime(Update update) {
         String setTenStartMessage = "Время уведомлений установлено на 10:00";
         SendMessage sendMessage = createMessage(update, setTenStartMessage);
-        // метод сохранения в настройках 10 часов для уведомлений
+        userService.setSchedulerTime(userID, 10);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, "✅ " + TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
                         (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
@@ -218,7 +219,7 @@ public class SendMessageService {
     public SendMessage setElevenNotificationTime(Update update) {
         String setElevenStartMessage = "Время уведомлений установлено на 11:00";
         SendMessage sendMessage = createMessage(update, setElevenStartMessage);
-        // метод сохранения в настройках 11 часов для уведомлений
+        userService.setSchedulerTime(userID, 11);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, TEN, "✅ " + ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
                         (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
@@ -229,7 +230,7 @@ public class SendMessageService {
     public SendMessage setTwelveNotificationTime(Update update) {
         String setTwelveStartMessage = "Время уведомлений установлено на 12:00";
         SendMessage sendMessage = createMessage(update, setTwelveStartMessage);
-        // метод сохранения в настройках 12 часов для уведомлений
+        userService.setSchedulerTime(userID, 12);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList("✅ " + TWELVE, THIRTEEN, FOURTEEN)),
                         (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
@@ -240,7 +241,7 @@ public class SendMessageService {
     public SendMessage setThirteenNotificationTime(Update update) {
         String setThirteenStartMessage = "Время уведомлений установлено на 13:00";
         SendMessage sendMessage = createMessage(update, setThirteenStartMessage);
-        // метод сохранения в настройках 13 часов для уведомлений
+        userService.setSchedulerTime(userID, 13);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, "✅ " + THIRTEEN, FOURTEEN)),
                         (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
@@ -251,7 +252,7 @@ public class SendMessageService {
     public SendMessage setFourteenNotificationTime(Update update) {
         String setFourteenStartMessage = "Время уведомлений установлено на 14:00";
         SendMessage sendMessage = createMessage(update, setFourteenStartMessage);
-        // метод сохранения в настройках 14 часов для уведомлений
+        userService.setSchedulerTime(userID, 14);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, "✅ " + FOURTEEN)),
                         (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
@@ -262,7 +263,7 @@ public class SendMessageService {
     public SendMessage setFifteenNotificationTime(Update update) {
         String setFifteenStartMessage = "Время уведомлений установлено на 15:00";
         SendMessage sendMessage = createMessage(update, setFifteenStartMessage);
-        // метод сохранения в настройках 15 часов для уведомлений
+        userService.setSchedulerTime(userID, 15);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
                         (asList("✅ " + FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
@@ -273,7 +274,7 @@ public class SendMessageService {
     public SendMessage setSixteenNotificationTime(Update update) {
         String setSixteenStartMessage = "Время уведомлений установлено на 16:00";
         SendMessage sendMessage = createMessage(update, setSixteenStartMessage);
-        // метод сохранения в настройках 16 часов для уведомлений
+        userService.setSchedulerTime(userID, 16);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
                         (asList(FIFTEEN, "✅ " + SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
@@ -284,7 +285,7 @@ public class SendMessageService {
     public SendMessage setSeventeenNotificationTime(Update update) {
         String setSeventeenStartMessage = "Время уведомлений установлено на 17:00";
         SendMessage sendMessage = createMessage(update, setSeventeenStartMessage);
-        // метод сохранения в настройках 17 часов для уведомлений
+        userService.setSchedulerTime(userID, 17);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
                         (asList(FIFTEEN, SIXTEEN, "✅ " + SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
@@ -295,7 +296,7 @@ public class SendMessageService {
     public SendMessage setEighteenNotificationTime(Update update) {
         String setEightinStartMessage = "Время уведомлений установлено на 18:00";
         SendMessage sendMessage = createMessage(update, setEightinStartMessage);
-        // метод сохранения в настройках 18 часов для уведомлений
+        userService.setSchedulerTime(userID, 18);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
                         (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList("✅ " + EIGHTEEN, TURN_OFF, BACK)));
@@ -306,7 +307,7 @@ public class SendMessageService {
     public SendMessage setTurnOffNotificationTime(Update update) {
         String setTurnOffStartMessage = "Уведомления отключены";
         SendMessage sendMessage = createMessage(update, setTurnOffStartMessage);
-        // метод сохранения в настройках Turn Off Notification Time
+        userService.setScheduler(userID, false);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
                         (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, "✅ " + TURN_OFF, BACK)));
