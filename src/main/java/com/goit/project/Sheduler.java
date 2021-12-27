@@ -1,4 +1,4 @@
-package map.java;
+package com.goit.project;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
@@ -9,8 +9,6 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Timer;
 
-import service.User;
-import service.User.*;
 public class Sheduler {
  private boolean scheduler;
  private int schedulerTime;
