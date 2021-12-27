@@ -123,7 +123,7 @@ public class UserService {
                 throw new Exception("Invalid bank name '" + bank + "', must be one of NBU, PB, Mono.");
         }
         if (!usd && !eur && !rub) {
-            result.append("Не выбрана валюта оповещения\n");
+            result.append("Не выбрана валюта оповещения\n\n");
         } else {
             result.append("Курс валют в ")
                     .append(bankString)

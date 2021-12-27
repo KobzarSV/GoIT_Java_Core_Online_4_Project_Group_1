@@ -21,7 +21,7 @@ public class Buttons {
     public static final String EUR = "EUR";
     public static final String RUB = "RUB";
 
-    public static final String TIME_OF_NOTIFICATIONS = "Время оповещений";
+    public static final String TIME_OF_NOTIFICATIONS = "Время оповещения";
     public static final String NINE = "9:00";
     public static final String TEN = "10:00";
     public static final String ELEVEN = "11:00";
@@ -32,5 +32,5 @@ public class Buttons {
     public static final String SIXTEEN = "16:00";
     public static final String SEVENTEEN = "17:00";
     public static final String EIGHTEEN = "18:00";
-    public static final String TURN_OFF = "Вкл/Выкл уведомления";
+    public static final String TURN_OFF = "Вкл/Выкл";
 }
