@@ -4,12 +4,17 @@ import java.math.BigDecimal;
 
 class Currency{
     String name; // EUR, USD, RUB
-    BigDecimal rateBuy;
-    BigDecimal rateSell;
+    BigDecimal rateBuy = BigDecimal.valueOf(0.0);
+    BigDecimal rateSell = BigDecimal.valueOf(0.0);
     String bankName; // NBU, PB, Mono
     String baseCName = "UAH"; //Валюта по отношению к которой берется курс. У нас пока только гривна.
 
     public Currency() {
+    }
+
+    public Currency(String bankName, String currName) {
+        this.name = currName;
+        this.bankName = bankName;
     }
 
     public void setName(String name) {
