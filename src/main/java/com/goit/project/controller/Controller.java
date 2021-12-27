@@ -13,6 +13,6 @@ public class Controller {
         telegramBotsApi.registerBot(new Bot());
 
         DataCaching dataCache = DataCaching.getInstance();
-        dataCache.run();
+        dataCache.run(); //зачем тут эта команда?
     }
 }
