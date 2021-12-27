@@ -1,13 +1,11 @@
-package com.goit.task;
+package com.goit.project.task;
 
-import com.goit.utils.Utils;
+import com.goit.project.utils.Utils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BankResponse {
     ChoiceBank choice;
