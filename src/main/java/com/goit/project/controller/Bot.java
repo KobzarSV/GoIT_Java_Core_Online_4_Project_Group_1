@@ -1,24 +1,48 @@
 package com.goit.project.controller;
 
+import lombok.SneakyThrows;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import static com.goit.project.controller.Buttons.*;
 
 public class Bot extends TelegramLongPollingBot {
 
-    SendMessageService sendMessageService = new SendMessageService();
+    private static final String FILE_PATH = "src/main/resources/bot_info.txt";
+    File file = new File(FILE_PATH);
 
-    @Override
-    public String getBotUsername() {
-        return "@KSVtestMyBot";
+    private static String[] getBotInfo(File file) throws IOException {
+        String[] botInfo = new String[2];
+        if (!file.exists()){
+            throw new IOException("File \"" + file.getName() + "\" in path \"" + file.getParent() + "\" not found!");
+        }
+        try (BufferedReader inputStream = new BufferedReader(new FileReader(file));) {
+            botInfo[0] = inputStream.readLine();
+            botInfo[1] = inputStream.readLine();
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
+        return botInfo;
     }
 
+    SendMessageService sendMessageService = new SendMessageService();
+
+    @SneakyThrows
+    @Override
+    public String getBotUsername() {
+        return getBotInfo(file)[0];
+    }
+
+    @SneakyThrows
     @Override
     public String getBotToken() {
-        return "5020369693:AAG-6fhATMoHmc5Bs6rx4k0WXLIYpSDjjP4";
+        return getBotInfo(file)[1];
     }
 
     @Override

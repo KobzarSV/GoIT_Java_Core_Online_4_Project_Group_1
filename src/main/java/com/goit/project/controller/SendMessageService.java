@@ -5,6 +5,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+import java.util.Objects;
+
 import static com.goit.project.controller.Buttons.*;
 import static java.util.Arrays.asList;
 
@@ -12,7 +14,7 @@ public class SendMessageService {
 
     private final ButtonsService buttonsService = new ButtonsService();
     int userID;
-    UserService userService = new UserService();
+    UserService userService = UserService.getInstance();
 
     private SendMessage createMessage(Update update, String message) {
         SendMessage sendMessage = new SendMessage();
@@ -36,7 +38,12 @@ public class SendMessageService {
     public SendMessage getInfoDefault(Update update) {
         // вместо DEFAULT_MESSAGE здесь будет метод, который будет отображать курс валют по умолчанию
         //  defaultExchangeRate()
-        String defaultInfoMessage = "Курс валют в Приват Банк: USD/UAH\nПокупка: 27.55\nПродажа: 27.95";
+        String defaultInfoMessage = null;
+        try {
+            defaultInfoMessage = userService.getInfo(userID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         SendMessage sendMessage = createMessage(update, defaultInfoMessage);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(asList(GET_INFO, SETTINGS)));
@@ -89,7 +96,7 @@ public class SendMessageService {
     public SendMessage setFourSings(Update update) {
         String fourSingsStartMessage = "Выбрано 4 знака после запятой";
         SendMessage sendMessage = createMessage(update, fourSingsStartMessage);
-        userService.setRounding(userID, 3);
+        userService.setRounding(userID, 4);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList(TWO_SINGS, THREE_SINGS, "✅ " + FOUR_SINGS, BACK)));
@@ -100,9 +107,21 @@ public class SendMessageService {
     public SendMessage selectBank(Update update) {
         String bankStartMessage = "Выберите Банк";
         SendMessage sendMessage = createMessage(update, bankStartMessage);
-        ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtons(buttonsService.createButtons(
-                        asList("NBU", "✅ " + "PB", "Mono", BACK)));
+        String bank = userService.getBank(userID);
+        ReplyKeyboardMarkup keyboardMarkup;
+        if (Objects.equals(bank, "NBU")) {
+            keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
+                            asList("✅ " + "NBU", "PB", "Mono", BACK)));
+        } else if (Objects.equals(bank, "PB")) {
+            keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
+                            asList("NBU", "✅ " + "PB", "Mono", BACK)));
+        } else if (Objects.equals(bank, "Mono")) {
+            keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
+                            asList("NBU", "PB", "✅ " + "Mono", BACK)));
+        } else {
+            keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
+                    asList("✅ " + "NBU", "PB", "Mono", BACK)));
+        }
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -153,7 +172,7 @@ public class SendMessageService {
     public SendMessage selectUsdCurrency(Update update) {
         String usdStartMessage = "Выбрана валюта USD";
         SendMessage sendMessage = createMessage(update, usdStartMessage);
-        userService.setUsd(userID, true);
+        userService.setUsd(userID, !userService.getUsd(userID));
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList("✅ " + USD, EUR, RUB, BACK)));
@@ -164,7 +183,7 @@ public class SendMessageService {
     public SendMessage selectEurCurrency(Update update) {
         String eurStartMessage = "Выбрана валюта EUR";
         SendMessage sendMessage = createMessage(update, eurStartMessage);
-        userService.setEur(userID, true);
+        userService.setEur(userID, !userService.getEur(userID));
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList(USD, "✅ " + EUR, RUB, BACK)));
@@ -175,7 +194,7 @@ public class SendMessageService {
     public SendMessage selectRubCurrency(Update update) {
         String rubStartMessage = "Выбрана валюта RUB";
         SendMessage sendMessage = createMessage(update, rubStartMessage);
-        userService.setRub(userID, true);
+        userService.setRub(userID, !userService.getRub(userID));
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList(USD, EUR, "✅ " + RUB, BACK)));
