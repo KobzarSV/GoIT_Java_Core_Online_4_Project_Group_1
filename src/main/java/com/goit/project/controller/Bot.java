@@ -140,7 +140,10 @@ public class Bot extends TelegramLongPollingBot {
                     executeMessage(sendMessageService.setEighteenNotificationTime(update));
                     break;
                 case TURN_OFF:
-                    executeMessage(sendMessageService.setTurnOffNotificationTime(update));
+                    executeMessage(sendMessageService.switchScheduler(update));
+                    break;
+                case "✅ " + TURN_OFF:
+                    executeMessage(sendMessageService.switchScheduler(update));
                     break;
                 default:
                     System.out.println("Команда не существует");

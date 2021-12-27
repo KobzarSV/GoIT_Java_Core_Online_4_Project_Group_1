@@ -38,8 +38,6 @@ public class SendMessageService {
     }
 
     public SendMessage getInfoDefault(Update update) {
-        // вместо DEFAULT_MESSAGE здесь будет метод, который будет отображать курс валют по умолчанию
-        //  defaultExchangeRate()
         String defaultInfoMessage = null;
         try {
             defaultInfoMessage = userService.getInfo(userID);
@@ -113,13 +111,13 @@ public class SendMessageService {
         ReplyKeyboardMarkup keyboardMarkup;
         if (Objects.equals(bank, "NBU")) {
             keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
-                            asList("✅ " + "NBU", "PB", "Mono", BACK)));
+                    asList("✅ " + "NBU", "PB", "Mono", BACK)));
         } else if (Objects.equals(bank, "PB")) {
             keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
-                            asList("NBU", "✅ " + "PB", "Mono", BACK)));
+                    asList("NBU", "✅ " + "PB", "Mono", BACK)));
         } else if (Objects.equals(bank, "Mono")) {
             keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
-                            asList("NBU", "PB", "✅ " + "Mono", BACK)));
+                    asList("NBU", "PB", "✅ " + "Mono", BACK)));
         } else {
             keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
                     asList("✅ " + "NBU", "PB", "Mono", BACK)));
@@ -134,7 +132,7 @@ public class SendMessageService {
         userService.setBank(userID, NBU_BANK);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
-                        asList("✅ " + "NBU", "PB" , "Mono", BACK)));
+                        asList("✅ " + "NBU", "PB", "Mono", BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -353,13 +351,24 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage setTurnOffNotificationTime(Update update) {
-        String setTurnOffStartMessage = "Уведомления отключены";
-        SendMessage sendMessage = createMessage(update, setTurnOffStartMessage);
-        userService.setScheduler(userID, false);
-        ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, "✅ " + TURN_OFF, BACK)));
+    public SendMessage switchScheduler(Update update) {
+        boolean scheduler = userService.getScheduler(userID);
+        String startMessage;
+        if (scheduler) {
+            startMessage = "Уведомления включены";
+        } else {
+            startMessage = "Уведомления отключены";
+        }
+        SendMessage sendMessage = createMessage(update, startMessage);
+        userService.setScheduler(userID, !scheduler);
+        ReplyKeyboardMarkup keyboardMarkup;
+        if (scheduler) {
+            keyboardMarkup = buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
+                    (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, "✅ " + TURN_OFF, BACK)));
+        } else {
+            keyboardMarkup = buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
+                    (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+        }
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
