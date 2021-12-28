@@ -17,6 +17,7 @@ public class SendMessageService {
     private final ButtonsService buttonsService = new ButtonsService();
     int userID;
     UserService userService = UserService.getInstance();
+    boolean beInAdvancedSettings = false;
 
     private SendMessage createMessage(Update update, String message) {
         SendMessage sendMessage = new SendMessage();
@@ -51,12 +52,21 @@ public class SendMessageService {
         return sendMessage;
     }
 
+    public SendMessage startMenu(Update update) {
+        String startMenu = "Меню";
+        SendMessage sendMessage = createMessage(update, startMenu);
+        ReplyKeyboardMarkup keyboardMarkup =
+                buttonsService.setButtons(buttonsService.createButtons(asList(GET_INFO, SETTINGS)));
+        sendMessage.setReplyMarkup(keyboardMarkup);
+        return sendMessage;
+    }
+
     public SendMessage setSettings(Update update) {
         String settingsStartMessage = "Меню настроек";
         SendMessage sendMessage = createMessage(update, settingsStartMessage);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtons(buttonsService.createButtons(
-                        asList(SIGNS, BANK, CURRENCIES, TIME_OF_NOTIFICATIONS)));
+                buttonsService.setButtonsRows(
+                        asList(CURRENCIES, BANK), asList(SIGNS, TIME_OF_NOTIFICATIONS), asList(BACK));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -64,6 +74,7 @@ public class SendMessageService {
     public SendMessage setSings(Update update) {
         String singsStartMessage = "Выберите кол-во знаков после запятой";
         SendMessage sendMessage = createMessage(update, singsStartMessage);
+        beInAdvancedSettings = true;
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(
                         asList("✅ " + TWO_SINGS, THREE_SINGS, FOUR_SINGS, BACK)));
@@ -122,6 +133,7 @@ public class SendMessageService {
             keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
                     asList("✅ " + "NBU", "PB", "Mono", BACK)));
         }
+        beInAdvancedSettings = true;
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -163,9 +175,9 @@ public class SendMessageService {
         String currencyStartMessage = "Выберите валюту";
         SendMessage sendMessage = createMessage(update, currencyStartMessage);
         List<String> buttonsList = createButtonsList();
-
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(buttonsList));
+        beInAdvancedSettings = true;
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -175,7 +187,6 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, usdStartMessage);
         userService.setUsd(userID, !userService.getUsd(userID));
         List<String> buttonsList = createButtonsList();
-
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
@@ -187,7 +198,6 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, eurStartMessage);
         userService.setEur(userID, !userService.getEur(userID));
         List<String> buttonsList = createButtonsList();
-
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
@@ -199,7 +209,6 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, rubStartMessage);
         userService.setRub(userID, !userService.getRub(userID));
         List<String> buttonsList = createButtonsList();
-
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
@@ -234,8 +243,9 @@ public class SendMessageService {
         String setNotificationTimeStartMessage = "Выберите время уведомлений";
         SendMessage sendMessage = createMessage(update, setNotificationTimeStartMessage);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                        (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
+        beInAdvancedSettings = true;
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -244,10 +254,9 @@ public class SendMessageService {
         String setNineStartMessage = "Время уведомлений установлено на 9:00";
         SendMessage sendMessage = createMessage(update, setNineStartMessage);
         userService.setSchedulerTime(userID, 9);
-
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList("✅ " + NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList("✅ " + NINE, TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                        (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -257,8 +266,8 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, setTenStartMessage);
         userService.setSchedulerTime(userID, 10);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, "✅ " + TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, "✅ " + TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                        (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -268,8 +277,8 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, setElevenStartMessage);
         userService.setSchedulerTime(userID, 11);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, "✅ " + ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, TEN, "✅ " + ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                        (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -279,8 +288,8 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, setTwelveStartMessage);
         userService.setSchedulerTime(userID, 12);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList("✅ " + TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, "✅ " + TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                        (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -290,8 +299,8 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, setThirteenStartMessage);
         userService.setSchedulerTime(userID, 13);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, "✅ " + THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, TWELVE)), (asList("✅ " + THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                        (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -301,8 +310,8 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, setFourteenStartMessage);
         userService.setSchedulerTime(userID, 14);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, "✅ " + FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, "✅ " + FOURTEEN, FIFTEEN, SIXTEEN)),
+                        (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -312,8 +321,8 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, setFifteenStartMessage);
         userService.setSchedulerTime(userID, 15);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList("✅ " + FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, "✅ " + FIFTEEN, SIXTEEN)),
+                        (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -323,8 +332,8 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, setSixteenStartMessage);
         userService.setSchedulerTime(userID, 16);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, "✅ " + SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, "✅ " + SIXTEEN)),
+                        (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -334,8 +343,8 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, setSeventeenStartMessage);
         userService.setSchedulerTime(userID, 17);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, "✅ " + SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                        (asList("✅ " + SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -345,8 +354,8 @@ public class SendMessageService {
         SendMessage sendMessage = createMessage(update, setEightinStartMessage);
         userService.setSchedulerTime(userID, 18);
         ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                        (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList("✅ " + EIGHTEEN, TURN_OFF, BACK)));
+                buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                        (asList(SEVENTEEN, "✅ " + EIGHTEEN, TURN_OFF, BACK)));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
@@ -363,11 +372,11 @@ public class SendMessageService {
         userService.setScheduler(userID, !scheduler);
         ReplyKeyboardMarkup keyboardMarkup;
         if (scheduler) {
-            keyboardMarkup = buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                    (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, "✅ " + TURN_OFF, BACK)));
+            keyboardMarkup = buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                    (asList(SEVENTEEN, EIGHTEEN, "✅ " + TURN_OFF, BACK)));
         } else {
-            keyboardMarkup = buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN)), (asList(TWELVE, THIRTEEN, FOURTEEN)),
-                    (asList(FIFTEEN, SIXTEEN, SEVENTEEN)), (asList(EIGHTEEN, TURN_OFF, BACK)));
+            keyboardMarkup = buttonsService.setButtonsRows((asList(NINE, TEN, ELEVEN, TWELVE)), (asList(THIRTEEN, FOURTEEN, FIFTEEN, SIXTEEN)),
+                    (asList(SEVENTEEN, EIGHTEEN, TURN_OFF, BACK)));
         }
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;

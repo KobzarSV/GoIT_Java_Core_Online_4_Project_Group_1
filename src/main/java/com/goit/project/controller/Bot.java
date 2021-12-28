@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
 import static com.goit.project.controller.Buttons.*;
 
 public class Bot extends TelegramLongPollingBot {
@@ -19,7 +20,7 @@ public class Bot extends TelegramLongPollingBot {
 
     private static String[] getBotInfo(File file) throws IOException {
         String[] botInfo = new String[2];
-        if (!file.exists()){
+        if (!file.exists()) {
             throw new IOException("File \"" + file.getName() + "\" in path \"" + file.getParent() + "\" not found!");
         }
         try (BufferedReader inputStream = new BufferedReader(new FileReader(file));) {
@@ -59,8 +60,14 @@ public class Bot extends TelegramLongPollingBot {
                     executeMessage(sendMessageService.setSettings(update));
                     break;
                 case BACK:
-                    executeMessage(sendMessageService.getInfoDefault(update));
-                    break;
+                    if (sendMessageService.beInAdvancedSettings) {
+                        executeMessage(sendMessageService.setSettings(update));
+                        sendMessageService.beInAdvancedSettings = false;
+                        break;
+                    } else {
+                        executeMessage(sendMessageService.startMenu(update));
+                        break;
+                    }
                 case SIGNS:
                     executeMessage(sendMessageService.setSings(update));
                     break;

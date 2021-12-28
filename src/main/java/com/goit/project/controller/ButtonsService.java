@@ -27,8 +27,8 @@ public class ButtonsService {
         return keyboard;
     }
 
-    public ReplyKeyboardMarkup setButtonsRows(List<String> buttonsNameFirst, List<String> buttonsNameSecond,
-                                              List<String> buttonsNameThird, List<String> buttonsNameFourth) {
+    public ReplyKeyboardMarkup setButtonsRows(
+            List<String> buttonsNameFirst, List<String> buttonsNameSecond, List<String> buttonsNameThird) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
@@ -38,7 +38,6 @@ public class ButtonsService {
         keyboard.add(keyboardRow(buttonsNameFirst));
         keyboard.add(keyboardRow(buttonsNameSecond));
         keyboard.add(keyboardRow(buttonsNameThird));
-        keyboard.add(keyboardRow(buttonsNameFourth));
         replyKeyboardMarkup.setKeyboard(keyboard);
         return replyKeyboardMarkup;
     }
