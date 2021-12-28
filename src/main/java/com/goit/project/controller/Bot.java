@@ -54,7 +54,7 @@ public class Bot extends TelegramLongPollingBot {
                     executeMessage(sendMessageService.startMessage(update));
                     break;
                 case GET_INFO:
-                    executeMessage(sendMessageService.getInfoDefault(update));
+                    executeMessage(sendMessageService.getInfo(update));
                     break;
                 case SETTINGS:
                     executeMessage(sendMessageService.setSettings(update));

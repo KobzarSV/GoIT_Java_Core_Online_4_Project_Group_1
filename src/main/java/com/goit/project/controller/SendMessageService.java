@@ -15,7 +15,6 @@ import static java.util.Arrays.asList;
 public class SendMessageService {
 
     private final ButtonsService buttonsService = new ButtonsService();
-    int userID;
     UserService userService = UserService.getInstance();
     boolean beInAdvancedSettings = false;
 
@@ -27,7 +26,7 @@ public class SendMessageService {
     }
 
     public SendMessage startMessage(Update update) {
-        userID = Math.toIntExact(update.getMessage().getChatId());
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         userService.createUser(userID);
         System.out.println(userID);
         String startTextMessage = "Добро пожаловать! Этот бот поможет отслеживать актуальные курсы валют \uD83D\uDCB1";
@@ -38,7 +37,22 @@ public class SendMessageService {
         return sendMessage;
     }
 
-    public SendMessage getInfoDefault(Update update) {
+    public SendMessage getInfo(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
+        String defaultInfoMessage = null;
+        try {
+            defaultInfoMessage = userService.getInfo(userID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        SendMessage sendMessage = createMessage(update, defaultInfoMessage);
+        ReplyKeyboardMarkup keyboardMarkup =
+                buttonsService.setButtons(buttonsService.createButtons(asList(GET_INFO, SETTINGS)));
+        sendMessage.setReplyMarkup(keyboardMarkup);
+        return sendMessage;
+    }
+
+    public SendMessage getInfo(Update update, int userID) {
         String defaultInfoMessage = null;
         try {
             defaultInfoMessage = userService.getInfo(userID);
@@ -72,17 +86,28 @@ public class SendMessageService {
     }
 
     public SendMessage setSings(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String singsStartMessage = "Выберите кол-во знаков после запятой";
         SendMessage sendMessage = createMessage(update, singsStartMessage);
+        int rounding = userService.getRounding(userID);
+        ReplyKeyboardMarkup keyboardMarkup;
         beInAdvancedSettings = true;
-        ReplyKeyboardMarkup keyboardMarkup =
-                buttonsService.setButtons(buttonsService.createButtons(
-                        asList("✅ " + TWO_SINGS, THREE_SINGS, FOUR_SINGS, BACK)));
+        if (rounding == 2) {
+            keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
+                    asList("✅ " + TWO_SINGS, THREE_SINGS, FOUR_SINGS, BACK)));
+        } else if (rounding == 3) {
+            keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
+                    asList(TWO_SINGS, "✅ " + THREE_SINGS, FOUR_SINGS, BACK)));
+        } else {
+            keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
+                    asList(TWO_SINGS, THREE_SINGS, "✅ " + FOUR_SINGS, BACK)));
+        }
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
 
     public SendMessage setTwoSings(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String twoSingsStartMessage = "Выбрано 2 знака после запятой";
         SendMessage sendMessage = createMessage(update, twoSingsStartMessage);
         userService.setRounding(userID, 2);
@@ -94,6 +119,7 @@ public class SendMessageService {
     }
 
     public SendMessage setThreeSings(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String threeSingsStartMessage = "Выбрано 3 знака после запятой";
         SendMessage sendMessage = createMessage(update, threeSingsStartMessage);
         userService.setRounding(userID, 3);
@@ -105,6 +131,7 @@ public class SendMessageService {
     }
 
     public SendMessage setFourSings(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String fourSingsStartMessage = "Выбрано 4 знака после запятой";
         SendMessage sendMessage = createMessage(update, fourSingsStartMessage);
         userService.setRounding(userID, 4);
@@ -116,6 +143,7 @@ public class SendMessageService {
     }
 
     public SendMessage selectBank(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String bankStartMessage = "Выберите Банк";
         SendMessage sendMessage = createMessage(update, bankStartMessage);
         String bank = userService.getBank(userID);
@@ -126,12 +154,9 @@ public class SendMessageService {
         } else if (Objects.equals(bank, "PB")) {
             keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
                     asList("NBU", "✅ " + "PB", "Mono", BACK)));
-        } else if (Objects.equals(bank, "Mono")) {
-            keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
-                    asList("NBU", "PB", "✅ " + "Mono", BACK)));
         } else {
             keyboardMarkup = buttonsService.setButtons(buttonsService.createButtons(
-                    asList("✅ " + "NBU", "PB", "Mono", BACK)));
+                    asList("NBU", "PB", "✅ " + "Mono", BACK)));
         }
         beInAdvancedSettings = true;
         sendMessage.setReplyMarkup(keyboardMarkup);
@@ -139,6 +164,7 @@ public class SendMessageService {
     }
 
     public SendMessage selectNbuBank(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String nbuBankStartMessage = "Выбран НБУ";
         SendMessage sendMessage = createMessage(update, nbuBankStartMessage);
         userService.setBank(userID, NBU_BANK);
@@ -150,6 +176,7 @@ public class SendMessageService {
     }
 
     public SendMessage selectPrivateBank(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String pbBankStartMessage = "Выбран Приват Банк";
         SendMessage sendMessage = createMessage(update, pbBankStartMessage);
         userService.setBank(userID, PB_BANK);
@@ -161,6 +188,7 @@ public class SendMessageService {
     }
 
     public SendMessage selectMonoBank(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String monoBankStartMessage = "Выбран Моно Банк";
         SendMessage sendMessage = createMessage(update, monoBankStartMessage);
         userService.setBank(userID, MONO_BANK);
@@ -174,7 +202,7 @@ public class SendMessageService {
     public SendMessage selectCurrency(Update update) {
         String currencyStartMessage = "Выберите валюту";
         SendMessage sendMessage = createMessage(update, currencyStartMessage);
-        List<String> buttonsList = createButtonsList();
+        List<String> buttonsList = createButtonsList(update);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         beInAdvancedSettings = true;
@@ -183,10 +211,11 @@ public class SendMessageService {
     }
 
     public SendMessage changeUsdCurrency(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String usdStartMessage = "Изменена валюта USD";
         SendMessage sendMessage = createMessage(update, usdStartMessage);
         userService.setUsd(userID, !userService.getUsd(userID));
-        List<String> buttonsList = createButtonsList();
+        List<String> buttonsList = createButtonsList(update);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
@@ -194,10 +223,11 @@ public class SendMessageService {
     }
 
     public SendMessage changeEurCurrency(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String eurStartMessage = "Изменена валюта EUR";
         SendMessage sendMessage = createMessage(update, eurStartMessage);
         userService.setEur(userID, !userService.getEur(userID));
-        List<String> buttonsList = createButtonsList();
+        List<String> buttonsList = createButtonsList(update);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
@@ -205,17 +235,19 @@ public class SendMessageService {
     }
 
     public SendMessage changeRubCurrency(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String rubStartMessage = "Изменена валюта RUB";
         SendMessage sendMessage = createMessage(update, rubStartMessage);
         userService.setRub(userID, !userService.getRub(userID));
-        List<String> buttonsList = createButtonsList();
+        List<String> buttonsList = createButtonsList(update);
         ReplyKeyboardMarkup keyboardMarkup =
                 buttonsService.setButtons(buttonsService.createButtons(buttonsList));
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
 
-    private List<String> createButtonsList() {
+    private List<String> createButtonsList(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         boolean usd = userService.getUsd(userID);
         boolean eur = userService.getEur(userID);
         boolean rub = userService.getRub(userID);
@@ -251,6 +283,7 @@ public class SendMessageService {
     }
 
     public SendMessage setNineNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setNineStartMessage = "Время уведомлений установлено на 9:00";
         SendMessage sendMessage = createMessage(update, setNineStartMessage);
         userService.setSchedulerTime(userID, 9);
@@ -262,6 +295,7 @@ public class SendMessageService {
     }
 
     public SendMessage setTenNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setTenStartMessage = "Время уведомлений установлено на 10:00";
         SendMessage sendMessage = createMessage(update, setTenStartMessage);
         userService.setSchedulerTime(userID, 10);
@@ -273,6 +307,7 @@ public class SendMessageService {
     }
 
     public SendMessage setElevenNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setElevenStartMessage = "Время уведомлений установлено на 11:00";
         SendMessage sendMessage = createMessage(update, setElevenStartMessage);
         userService.setSchedulerTime(userID, 11);
@@ -284,6 +319,7 @@ public class SendMessageService {
     }
 
     public SendMessage setTwelveNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setTwelveStartMessage = "Время уведомлений установлено на 12:00";
         SendMessage sendMessage = createMessage(update, setTwelveStartMessage);
         userService.setSchedulerTime(userID, 12);
@@ -295,6 +331,7 @@ public class SendMessageService {
     }
 
     public SendMessage setThirteenNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setThirteenStartMessage = "Время уведомлений установлено на 13:00";
         SendMessage sendMessage = createMessage(update, setThirteenStartMessage);
         userService.setSchedulerTime(userID, 13);
@@ -306,6 +343,7 @@ public class SendMessageService {
     }
 
     public SendMessage setFourteenNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setFourteenStartMessage = "Время уведомлений установлено на 14:00";
         SendMessage sendMessage = createMessage(update, setFourteenStartMessage);
         userService.setSchedulerTime(userID, 14);
@@ -317,6 +355,7 @@ public class SendMessageService {
     }
 
     public SendMessage setFifteenNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setFifteenStartMessage = "Время уведомлений установлено на 15:00";
         SendMessage sendMessage = createMessage(update, setFifteenStartMessage);
         userService.setSchedulerTime(userID, 15);
@@ -328,6 +367,7 @@ public class SendMessageService {
     }
 
     public SendMessage setSixteenNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setSixteenStartMessage = "Время уведомлений установлено на 16:00";
         SendMessage sendMessage = createMessage(update, setSixteenStartMessage);
         userService.setSchedulerTime(userID, 16);
@@ -339,6 +379,7 @@ public class SendMessageService {
     }
 
     public SendMessage setSeventeenNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setSeventeenStartMessage = "Время уведомлений установлено на 17:00";
         SendMessage sendMessage = createMessage(update, setSeventeenStartMessage);
         userService.setSchedulerTime(userID, 17);
@@ -350,6 +391,7 @@ public class SendMessageService {
     }
 
     public SendMessage setEighteenNotificationTime(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         String setEightinStartMessage = "Время уведомлений установлено на 18:00";
         SendMessage sendMessage = createMessage(update, setEightinStartMessage);
         userService.setSchedulerTime(userID, 18);
@@ -361,6 +403,7 @@ public class SendMessageService {
     }
 
     public SendMessage switchScheduler(Update update) {
+        int userID = Math.toIntExact(update.getMessage().getChatId());
         boolean scheduler = userService.getScheduler(userID);
         String startMessage;
         if (scheduler) {
