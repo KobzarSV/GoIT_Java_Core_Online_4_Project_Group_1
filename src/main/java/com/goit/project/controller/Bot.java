@@ -32,7 +32,7 @@ public class Bot extends TelegramLongPollingBot {
         return botInfo;
     }
 
-    SendMessageService sendMessageService = new SendMessageService();
+    SendMessageService sendMessageService = SendMessageService.getSendMessageService();
 
     @SneakyThrows
     @Override
@@ -117,34 +117,34 @@ public class Bot extends TelegramLongPollingBot {
                     executeMessage(sendMessageService.setNotificationTime(update));
                     break;
                 case NINE:
-                    executeMessage(sendMessageService.setNineNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 9));
                     break;
                 case TEN:
-                    executeMessage(sendMessageService.setTenNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 10));
                     break;
                 case ELEVEN:
-                    executeMessage(sendMessageService.setElevenNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 11));
                     break;
                 case TWELVE:
-                    executeMessage(sendMessageService.setTwelveNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 12));
                     break;
                 case THIRTEEN:
-                    executeMessage(sendMessageService.setThirteenNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 13));
                     break;
                 case FOURTEEN:
-                    executeMessage(sendMessageService.setFourteenNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 14));
                     break;
                 case FIFTEEN:
-                    executeMessage(sendMessageService.setFifteenNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 15));
                     break;
                 case SIXTEEN:
-                    executeMessage(sendMessageService.setSixteenNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 16));
                     break;
                 case SEVENTEEN:
-                    executeMessage(sendMessageService.setSeventeenNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 17));
                     break;
                 case EIGHTEEN:
-                    executeMessage(sendMessageService.setEighteenNotificationTime(update));
+                    executeMessage(sendMessageService.setNotificationTimes(update, 18));
                     break;
                 case TURN_OFF:
                     executeMessage(sendMessageService.switchScheduler(update));
