@@ -1,4 +1,4 @@
-package com.goit.project.task;
+package com.goit.project.response;
 
 import com.goit.project.utils.Utils;
 
@@ -13,8 +13,8 @@ public class BankResponse {
         this.choice = choice;
     }
 
-    HashMap<String, BigDecimal> getCurrency() throws IOException, InterruptedException {
-        HashMap<String, BigDecimal> currency = new HashMap<String, BigDecimal>();
+    public HashMap<String, BigDecimal> getCurrency() throws IOException, InterruptedException {
+        HashMap<String, BigDecimal> currency;
         switch (choice){
             case NBU :
                 currency = Utils.getCurrencies(ChoiceBank.NBU);

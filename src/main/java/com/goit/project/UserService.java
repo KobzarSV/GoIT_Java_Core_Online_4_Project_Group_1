@@ -30,10 +30,6 @@ public class UserService {
         userStorage.add(new User(userId));
     }
 
-    public User getUser(int userId) {
-        return userStorage.get(userId);
-    }
-
     public void setBank(int userId, String bank) {
         userStorage.get(userId).setBank(bank);
     }
