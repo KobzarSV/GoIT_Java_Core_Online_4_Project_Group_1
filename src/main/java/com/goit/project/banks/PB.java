@@ -3,17 +3,16 @@ package com.goit.project.banks;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class PB {
+public class PB implements Bank{
     String ccy;
     String base_ccy;
     BigDecimal buy;
     BigDecimal sale;
 
-    private static final String  [] arrayOfCodesPB = {"USD", "EUR", "RUR"};
-
+    public static final String URL_PB = "https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5";
 
     public int getCode(){
-        int code;
+        int code = 0;
         switch (ccy){
             case "USD":
                 code = 840;
@@ -25,17 +24,9 @@ public class PB {
                 code = 643;
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + ccy);
+                code = 0;
         }
         return code;
-    }
-
-    public String getBase_ccy() {
-        return base_ccy;
-    }
-
-    public String getCcy() {
-        return ccy;
     }
 
     public BigDecimal getBuy() {

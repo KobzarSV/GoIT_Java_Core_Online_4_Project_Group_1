@@ -3,7 +3,7 @@ package com.goit.project.banks;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Monobank {
+public class Monobank implements Bank{
     int currencyCodeA;
     int currencyCodeB = 980;
     long date;
@@ -11,16 +11,20 @@ public class Monobank {
     BigDecimal rateBuy;
     BigDecimal rateCross;
 
-    public int getCurrencyCodeA() {
+    public static final String URL_MONO = "https://api.monobank.ua/bank/currency";
+
+    public int getCode() {
         return currencyCodeA;
     }
 
-    public BigDecimal getRateSell() {
-        return rateSell;
+    @Override
+    public BigDecimal getBuy() {
+        return rateBuy;
     }
 
-    public BigDecimal getRateBuy() {
-        return rateBuy;
+    @Override
+    public BigDecimal getSale() {
+        return rateSell;
     }
 
     @Override

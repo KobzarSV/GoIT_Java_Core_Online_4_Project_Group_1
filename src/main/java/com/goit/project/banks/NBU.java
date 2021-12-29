@@ -9,17 +9,7 @@ public class NBU implements Bank{
     BigDecimal rate; //value of currency
     String cc;
     String exchangedate; //date
-    private static final String URL_NBU = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
-    private static final String  [] arrayOfCodesNBU = {"USD", "EUR", "RUB"};
-    private static final int  [] arrayOfCodes = {840, 978, 643};
-
-    public int[] getArrayOfCodes(){
-        return arrayOfCodes;
-    }
-
-    public String getUrl(){
-        return URL_NBU;
-    }
+    public static final String URL_NBU = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
 
     public BigDecimal getBuy(){
         return rate;
@@ -31,14 +21,6 @@ public class NBU implements Bank{
 
     public int getCode(){
         return  r030;
-    }
-
-    public BigDecimal getRate() {
-        return rate;
-    }
-
-    public String getCc() {
-        return cc;
     }
 
     @Override

@@ -6,6 +6,4 @@ public interface Bank {
     int getCode();
     BigDecimal getBuy();
     BigDecimal getSale();
-    String getUrl();
-    public int[] getArrayOfCodes();
 }
