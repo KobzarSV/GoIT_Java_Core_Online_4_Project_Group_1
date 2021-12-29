@@ -1,9 +1,6 @@
 package com.goit.project;
 
-import java.util.Objects;
-
 public class User {
-    private boolean active;
     private final int id;
     private String bank;
     private boolean usd;
@@ -15,7 +12,6 @@ public class User {
 
     public User(int id) {
         this.id = id;
-        active = true;
         bank = "NBU";
         usd = true;
         eur = true;
@@ -23,14 +19,6 @@ public class User {
         rounding = 2;
         scheduler = false;
         schedulerTime = 0;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public int getId() {
@@ -42,11 +30,7 @@ public class User {
     }
 
     public void setBank(String bank) {
-        if (Objects.equals(bank, "NBU") || Objects.equals(bank, "PB") || Objects.equals(bank, "Mono")) {
-            this.bank = bank;
-        } else {
-            System.out.println("Rejected! Not existing value.");
-        }
+        this.bank = bank;
     }
 
     public boolean isUsd() {

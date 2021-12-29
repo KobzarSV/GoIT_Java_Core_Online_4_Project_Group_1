@@ -1,4 +1,4 @@
-package com.goit.project.task;
+package com.goit.project.response;
 
 public enum ChoiceBank {
     NBU,

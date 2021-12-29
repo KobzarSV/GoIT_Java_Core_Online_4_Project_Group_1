@@ -1,13 +1,13 @@
 package com.goit.project.utils;
 
-import banks.Bank;
-import banks.Monobank;
-import banks.NBU;
-import banks.PB;
+import com.goit.project.response.ChoiceBank;
+import com.goit.project.banks.Bank;
+import com.goit.project.banks.Monobank;
+import com.goit.project.banks.NBU;
+import com.goit.project.banks.PB;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import response.ChoiceBank;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -26,23 +26,26 @@ public class Utils {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final List<String> buy_sale = List.of(new String[]{"Buy", "Sale"});
     private static final List<String> curr = List.of(new String[]{"USD", "EUR", "RUB"});
-    private static final List<Integer>  listOfCodes = List.of(new Integer[]{840, 978, 643});
+    private static final List<Integer> listOfCodes = List.of(new Integer[]{840, 978, 643});
 
     public static HashMap<String, BigDecimal> getCurrencies(ChoiceBank choice) throws IOException, InterruptedException {
         String url = "";
         Type type = null;
         String name = "";
-        if(ChoiceBank.NBU == choice) {
+        if (ChoiceBank.NBU == choice) {
             url = NBU.URL_NBU;
-            type = new TypeToken<List<NBU>>() {}.getType();
+            type = new TypeToken<List<NBU>>() {
+            }.getType();
             name = "nbu";
-        }else if(ChoiceBank.PB == choice){
+        } else if (ChoiceBank.PB == choice) {
             url = PB.URL_PB;
-            type = new TypeToken<List<PB>>() {}.getType();
+            type = new TypeToken<List<PB>>() {
+            }.getType();
             name = "pb";
-        }else if(ChoiceBank.Monobank == choice){
+        } else if (ChoiceBank.Monobank == choice) {
             url = Monobank.URL_MONO;
-            type = new TypeToken<List<Monobank>>() {}.getType();
+            type = new TypeToken<List<Monobank>>() {
+            }.getType();
             name = "mono";
         }
         URI uri = URI.create(url);
@@ -64,8 +67,8 @@ public class Utils {
         return currency;
     }
 
-    private static List <BigDecimal> getCurrenciesOfBank(Integer codeOfCurrency, List<Bank> currencies) {
-        List <BigDecimal> res = new ArrayList<>();
+    private static List<BigDecimal> getCurrenciesOfBank(Integer codeOfCurrency, List<Bank> currencies) {
+        List<BigDecimal> res = new ArrayList<>();
         res.add(currencies.stream()
                 .filter(bank -> (bank.getCode() == (codeOfCurrency)))
                 .map(Bank::getBuy)
