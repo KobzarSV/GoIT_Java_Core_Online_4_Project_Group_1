@@ -131,38 +131,10 @@ public class DataCaching implements Runnable {
         return currencies;
     }
 
-    public Currency getEURNBU(){
-        return (currencyStorage.currenciesNBU).get("EUR");
-    }
-    public Currency getUSDNBU(){
-        return currencyStorage.currenciesNBU.get("USD");
-    }
-    public Currency getRUBNBU(){
-        return currencyStorage.currenciesNBU.get("RUB");
-    }
-    public Currency getEURPB(){
-        return currencyStorage.currenciesPB.get("EUR");
-    }
-    public Currency getUSDPB(){
-        return currencyStorage.currenciesPB.get("USD");
-    }
-    public Currency getRUBPB(){
-        return currencyStorage.currenciesNBU.get("RUB");
-    }
-    public Currency getEURMono(){
-        return currencyStorage.currenciesNBU.get("EUR");
-    }
-    public Currency getUSDMono(){
-        return currencyStorage.currenciesNBU.get("USD");
-    }
-    public Currency getRUBMono(){
-        return currencyStorage.currenciesNBU.get("RUB");
-    }
-
-
-    @Override
     public synchronized void run() {
         {
+            System.out.println("DataCaching running");
+
             do {
                 try {
                     parseCurrencyResponse((new BankResponse(ChoiceBank.PB)).getCurrency());
