@@ -66,6 +66,27 @@ public class SendMessageService {
         return sendMessage;
     }
 
+    private SendMessage createMessageForScheduler(Integer userId, String message) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(userId));
+        sendMessage.setText(message);
+        return sendMessage;
+    }
+
+    public SendMessage getInfoForScheduler(int userID) {
+        String defaultInfoMessage = null;
+        try {
+            defaultInfoMessage = userService.getInfo(userID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        SendMessage sendMessage = createMessageForScheduler(userID, defaultInfoMessage);
+        ReplyKeyboardMarkup keyboardMarkup =
+                buttonsService.setButtons(buttonsService.createButtons(asList(GET_INFO, SETTINGS)));
+        sendMessage.setReplyMarkup(keyboardMarkup);
+        return sendMessage;
+    }
+
     public SendMessage startMenu(Update update) {
         String startMenu = "Меню";
         SendMessage sendMessage = createMessage(update, startMenu);
