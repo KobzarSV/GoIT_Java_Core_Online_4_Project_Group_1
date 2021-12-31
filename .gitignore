@@ -4,3 +4,6 @@ target
 *.iml
 *.ipr
 README.md
+pom.xml
+main.java
+bot_info.txt
